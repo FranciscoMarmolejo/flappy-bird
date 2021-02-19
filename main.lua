@@ -10,8 +10,9 @@ V_Height = 243
 
 function love.load()
     love.window.setTitle("Paco n Garret Productions")
-    --sponsors
+    --imagenes
     ground = love.graphics.newImage("img/ground.png")
+	bg = love.graphics.newImage("img/background.png")
 
     love.graphics.setDefaultFilter('nearest', 'nearest')
     math.randomseed(os.time())
@@ -37,6 +38,8 @@ function love.keypressed(key)
 end
 
 function love.draw()
+	love.graphics.draw(bg, 0, 0, 0, 1.42) --( drawable, x, y, r, sx, sy, ox, oy, kx, ky ) s=scale,o =Origin offse, k= Shearing facto
+	love.graphics.draw(ground, 0,600, 0, .2, .1)
     push:apply('start')
     --draw begin --------
 
@@ -44,7 +47,7 @@ function love.draw()
     love.graphics.setFont(font)
     love.graphics.printf('Flappy bird', 0, 20, V_Width, 'center') 
     
-    love.graphics.draw(ground, 50,10, 0, .2, .2)
+    
     
     push:apply('end')
 end
