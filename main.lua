@@ -13,12 +13,11 @@ V_Height = 243
 
 function love.load()
     love.window.setTitle("Paco n Garret Productions")
-    
+
 	--Colors
 	terrain = {.87,.84,.58}
 	green = {.30,.74,.18}
-	
-	
+
 	--imagenes
     ground = love.graphics.newImage("img/ground.png")
 	bg = love.graphics.newImage("img/background.png")
@@ -46,21 +45,21 @@ function love.load()
 	gameState = 'start' -- 'pause' 'collide'
 	dirt = Ground(0,218,168,25,terrain)
 	grass = Ground(0,208,168,10,green)
+	score = 0
+	gameSpeed = 50
 	--Loop
 	function firstpipes()
 		randomPipes()
-		pipe1 = Pipe(V_Width ,0, 25, topSpace)
-		pipe2 = Pipe(V_Width ,topSpace + downSpace, 25, V_Height-downSpace-topSpace-35) --35 : 25 de dirt, 10 de grass
+		pipe1 = Pipe(V_Width ,0, 25, topSpace, gameSpeed)
+		pipe2 = Pipe(V_Width ,topSpace + downSpace, 25, V_Height-downSpace-topSpace-35, gameSpeed) --35 : 25 de dirt, 10 de grass
 	end
 	firstpipes()
 	function secondspipes()
 		randomPipes()
-		pipe3 = Pipe(V_Width + 120 ,0, 25, topSpace)
-		pipe4 = Pipe(V_Width + 120 ,topSpace + downSpace, 25, V_Height-downSpace-topSpace-35) --35 : 25 de dirt, 10 de grass
+		pipe3 = Pipe(V_Width + 120 ,0, 25, topSpace, gameSpeed)
+		pipe4 = Pipe(V_Width + 120 ,topSpace + downSpace, 25, V_Height-downSpace-topSpace-35, gameSpeed) --35 : 25 de dirt, 10 de grass
 	end
 	secondspipes()
-
-	
 
 end
 
@@ -72,7 +71,6 @@ function love.update(dt)
 			firstpipes()
 			pipe1.x=pipe3.x+120
 			pipe2.x=pipe4.x+120
-			
 		end
 
 		if pipe3.x + pipe3.w <0 and pipe4.x + pipe4.w < 0 then
@@ -80,6 +78,19 @@ function love.update(dt)
 			pipe3.x=pipe1.x+120
 			pipe4.x=pipe2.x+120
 		end
+		
+		if pipe1.x < player.x then
+			if pipe1.pass == 0 then
+				score = score+1
+				pipe1.pass = 1
+			end
+		elseif  pipe3.x < player.x then
+			if pipe3.pass == 0 then
+				score = score+1
+				pipe3.pass = 1
+			end
+		end
+			
 		player:update(dt)
 		pipe1:update(dt)
 		pipe2:update(dt)
@@ -117,6 +128,8 @@ function love.draw()
 	if gameState == 'start' then
     	love.graphics.setFont(font)
     	love.graphics.printf('Flappy bird', 0, 20, V_Width, 'center')
+	else
+	love.graphics.print(tostring(score),V_Width/2, V_Height/8)
 	end
     --draw begin --------
 	player:render()
