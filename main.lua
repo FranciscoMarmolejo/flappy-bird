@@ -2,13 +2,13 @@ push  = require 'push'
 Class = require 'Class'
 bird = require 'Bird'
 bird = require 'Ground'
-pipe= require 'Pipe'
+pipe = require 'Pipe'
 -----
 
-W_Width  = 1280
+W_Width  = 500
 W_Height = 720
 
-V_Width  = 432
+V_Width  = 168
 V_Height = 243
 
 function love.load()
@@ -36,10 +36,20 @@ function love.load()
     love.graphics.setFont(font)
 ---
 	--Game atributes 
+		--pipe
+		topSpace = 100
+		downSpace = 50
+		--
 	player= Bird()
 	gameState = 'start' -- 'pause' 'collide'
 	dirt = Ground(0,218,432,25,terrain)
 	grass = Ground(0,208,432,10,green)
+	pipe1 = Pipe(V_Width -25,0, 25, topSpace)
+	pipe2 = Pipe(V_Width -25,topSpace + downSpace, 25, V_Height-downSpace-topSpace)
+
+
+	
+
 end
 
 function love.update(dt)
@@ -47,6 +57,8 @@ function love.update(dt)
 		
 	elseif gameState == 'play' then
 		player:update(dt)
+		pipe1:update(dt)
+		pipe2:update(dt)
 	end
 end
 
@@ -83,7 +95,9 @@ function love.draw()
 	player:render()
 	dirt:render()
 	grass:render()
- 
+
+	pipe1:render()
+	pipe2:render()
     
     
     

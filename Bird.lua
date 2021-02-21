@@ -4,8 +4,8 @@ Bird = Class{}
 function Bird:init()
 	self.x = 75
 	self.y = 180
-	self.w = 30
-	self.h = 25
+	self.w = 20
+	self.h = 20
 	self.gravity = 0 --lo hace caer 
 end
 
@@ -16,7 +16,7 @@ end
 
 function Bird:jump()
 	if self.y >0 then
-		self.gravity = -165
+		self.gravity = -120
 	end
 end
 
