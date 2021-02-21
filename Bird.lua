@@ -3,7 +3,7 @@ Bird = Class{}
 
 function Bird:init()
 	self.x = 75
-	self.y = 180
+	self.y = 150
 	self.w = 20
 	self.h = 20
 	self.gravity = 0 --lo hace caer 

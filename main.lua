@@ -37,16 +37,28 @@ function love.load()
 ---
 	--Game atributes 
 		--pipe
-		topSpace = 100
-		downSpace = 50
+		function randomPipes()
+			topSpace = math.random(0,108)
+			downSpace = 50
+		end
 		--
 	player= Bird()
 	gameState = 'start' -- 'pause' 'collide'
-	dirt = Ground(0,218,432,25,terrain)
-	grass = Ground(0,208,432,10,green)
-	pipe1 = Pipe(V_Width -25,0, 25, topSpace)
-	pipe2 = Pipe(V_Width -25,topSpace + downSpace, 25, V_Height-downSpace-topSpace)
-
+	dirt = Ground(0,218,168,25,terrain)
+	grass = Ground(0,208,168,10,green)
+	--Loop
+	function firstpipes()
+		randomPipes()
+		pipe1 = Pipe(V_Width ,0, 25, topSpace)
+		pipe2 = Pipe(V_Width ,topSpace + downSpace, 25, V_Height-downSpace-topSpace-35) --35 : 25 de dirt, 10 de grass
+	end
+	firstpipes()
+	function secondspipes()
+		randomPipes()
+		pipe3 = Pipe(V_Width + 120 ,0, 25, topSpace)
+		pipe4 = Pipe(V_Width + 120 ,topSpace + downSpace, 25, V_Height-downSpace-topSpace-35) --35 : 25 de dirt, 10 de grass
+	end
+	secondspipes()
 
 	
 
@@ -56,9 +68,23 @@ function love.update(dt)
 	if gameState == 'start' then
 		
 	elseif gameState == 'play' then
+		if pipe1.x + pipe1.w <0 and pipe2.x + pipe2.w < 0 then
+			firstpipes()
+			pipe1.x=pipe3.x+120
+			pipe2.x=pipe4.x+120
+			
+		end
+
+		if pipe3.x + pipe3.w <0 and pipe4.x + pipe4.w < 0 then
+			secondspipes()
+			pipe3.x=pipe1.x+120
+			pipe4.x=pipe2.x+120
+		end
 		player:update(dt)
 		pipe1:update(dt)
 		pipe2:update(dt)
+		pipe3:update(dt)
+		pipe4:update(dt)
 	end
 end
 
@@ -88,9 +114,10 @@ function love.draw()
     push:apply('start')
 	
     --main txt
-    love.graphics.setFont(font)
-    love.graphics.printf('Flappy bird', 0, 20, V_Width, 'center')
-	
+	if gameState == 'start' then
+    	love.graphics.setFont(font)
+    	love.graphics.printf('Flappy bird', 0, 20, V_Width, 'center')
+	end
     --draw begin --------
 	player:render()
 	dirt:render()
@@ -98,7 +125,8 @@ function love.draw()
 
 	pipe1:render()
 	pipe2:render()
-    
+    pipe3:render()
+	pipe4:render()
     
     
     push:apply('end')

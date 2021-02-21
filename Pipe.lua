@@ -8,7 +8,7 @@ function Pipe:init(x,y,w,h)
 end
 
 function Pipe:update(dt)
-	self.x = self.x - 10 *dt 
+	self.x = self.x - 30 *dt 
 end
 
 function Pipe:render()
