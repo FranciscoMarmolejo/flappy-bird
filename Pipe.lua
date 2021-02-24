@@ -19,8 +19,8 @@ end
 function Pipe:render()
 	PIPE_SPRITE= love.graphics.newQuad(0,0,self.w, self.h,ancho,alto)
 
-	love.graphics.setColor(.5, 1, 0)
-	love.graphics.rectangle('line',self.x, self.y, self.w, self.h)
+	--love.graphics.setColor(.5, 1, 0)
+	--love.graphics.rectangle('line',self.x, self.y, self.w, self.h)
 	if self.rotation == false then
 		--love.graphics.draw(PIPE_IMAGE,self.x,self.y,0,.145,.15) <--Metodo anterior
 		love.graphics.draw(PIPE_IMAGE,PIPE_SPRITE,self.x,self.y)

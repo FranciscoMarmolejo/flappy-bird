@@ -46,7 +46,7 @@ function love.load()
 	dirt = Ground(0,218,168,25,terrain)
 	grass = Ground(0,208,168,10,green)
 	score = 0
-	gameSpeed = 50
+	gameSpeed = 100
 	--Loop
 	function firstpipes()
 		randomPipes()
@@ -90,7 +90,11 @@ function love.update(dt)
 				pipe3.pass = 1
 			end
 		end
-			
+
+		if player:collides(pipe1) or player:collides(pipe2) or player:collides(pipe3) or player:collides(pipe4) then
+			gameState='end'
+			pipe1.x , pipe2.x, pipe3.x, pipe4.x = V_Width + 5 , V_Width + 5, V_Width + 5, V_Width + 5
+		end	
 		player:update(dt)
 		pipe1:update(dt)
 		pipe2:update(dt)
@@ -123,14 +127,19 @@ function love.draw()
 	love.graphics.draw(bg, 0, 0, 0, 1.42) --( drawable, x, y, r, sx, sy, ox, oy, kx, ky ) s=scale,o =Origin offse, k= Shearing facto
 	--love.graphics.draw(ground, 0,600, 0, .2, .1)
     push:apply('start')
-	
+	love.graphics.setFont(font)
     --main txt
 	if gameState == 'start' then
-    	love.graphics.setFont(font)
     	love.graphics.printf('Flappy bird', 0, 20, V_Width, 'center')
+	elseif gameState == 'end' then
+		love.graphics.printf('Poop! you lose your score was:', 0, 20, V_Width, 'center')
+		love.graphics.print(tostring(score),V_Width/2, 120)
 	else
-	love.graphics.print(tostring(score),V_Width/2, V_Height/8)
+		love.graphics.print(tostring(score),V_Width/2, V_Height/8)
 	end
+	
+	
+	
     --draw begin --------
 	player:render()
 	dirt:render()
