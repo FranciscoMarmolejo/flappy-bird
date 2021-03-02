@@ -16,6 +16,7 @@ function love.load()
 	point = love.audio.newSource("mp3/score.mp3", "static")
 	wing = love.audio.newSource("mp3/wing.mp3", "static")
 	lose = love.audio.newSource("mp3/lose.mp3", "static")
+	slap = love.audio.newSource("mp3/slap.mp3", "static")
 	--Colors
 	terrain = {.87,.84,.58}
 	green = {.30,.74,.18}
@@ -96,10 +97,18 @@ function love.update(dt)
 		end
 
 		if player:collides(pipe1) or player:collides(pipe2) or player:collides(pipe3) or player:collides(pipe4) then
+			slap:play()
+			gameState='end'
+			player.y = 190
+			pipe1.x , pipe2.x, pipe3.x, pipe4.x = V_Width + 5 , V_Width + 5, V_Width + 5, V_Width + 5
 			lose:play()
+		end	
+		if player.y < 1 or player.y > 185 then
+			slap:play()
 			gameState='end'
 			pipe1.x , pipe2.x, pipe3.x, pipe4.x = V_Width + 5 , V_Width + 5, V_Width + 5, V_Width + 5
-		end	
+			lose:play()
+		end
 		player:update(dt)
 		pipe1:update(dt)
 		pipe2:update(dt)
@@ -116,6 +125,7 @@ function love.keypressed(key)
 		if gameState == 'play' then
 			gameState = 'pause'
 		elseif gameState == 'end' then
+			player= Bird()
 			gameState = 'start'
 			score = 0
 			gameSpeed = 100
@@ -143,9 +153,11 @@ function love.draw()
 	if gameState == 'start' then
     	love.graphics.printf('Flappy bird', 0, 20, V_Width, 'center')
 	elseif gameState == 'end' then
-		love.graphics.printf('Poop! you lose. your score was:', 0, 20, V_Width, 'center')
+		love.graphics.printf('Game over! Your score was:', 0, 20, V_Width, 'center')
 		love.graphics.print(tostring(score),V_Width/2, 80)
-		love.graphics.printf('Press Enter to restart', 0, 110, V_Width, 'center')
+		love.graphics.printf('Press Enter to restart', 15, 105, 200, 'right',0,.6,.6)
+		-- love.graphics.printf('This game dffdfdfdfd', 100, 190, V_Width, 'center',0,.5,.5) 
+
 	else
 		love.graphics.print(tostring(score),V_Width/2, V_Height/8)
 	end
@@ -153,9 +165,9 @@ function love.draw()
 	
 	
     --draw begin --------
-	if gameState ~= 'end' then
+	-- if gameState ~= 'end' then
 		player:render()	
-	end
+	-- end
 	dirt:render()
 	grass:render()
 
