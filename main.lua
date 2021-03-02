@@ -132,8 +132,8 @@ function love.draw()
 	if gameState == 'start' then
     	love.graphics.printf('Flappy bird', 0, 20, V_Width, 'center')
 	elseif gameState == 'end' then
-		love.graphics.printf('Poop! you lose your score was:', 0, 20, V_Width, 'center')
-		love.graphics.print(tostring(score),V_Width/2, 120)
+		love.graphics.printf('Poop! you lose. your score was:', 0, 20, V_Width, 'center')
+		love.graphics.print(tostring(score),V_Width/2, 80)
 	else
 		love.graphics.print(tostring(score),V_Width/2, V_Height/8)
 	end
@@ -141,7 +141,9 @@ function love.draw()
 	
 	
     --draw begin --------
-	player:render()
+	if gameState ~= 'end' then
+		player:render()	
+	end
 	dirt:render()
 	grass:render()
 
@@ -149,7 +151,6 @@ function love.draw()
 	pipe2:render()
     pipe3:render()
 	pipe4:render()
-    
     
     push:apply('end')
 end
