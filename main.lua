@@ -96,6 +96,10 @@ function love.update(dt)
 			end
 		end
 
+		if score > 7 then 
+			gameState = 'won'
+			pipe1.x , pipe2.x, pipe3.x, pipe4.x = V_Width + 5 , V_Width + 5, V_Width + 5, V_Width + 5
+		end
 		if player:collides(pipe1) or player:collides(pipe2) or player:collides(pipe3) or player:collides(pipe4) then
 			slap:play()
 			gameState='end'
@@ -124,7 +128,7 @@ function love.keypressed(key)
     elseif key == 'enter' or key == 'return' then
 		if gameState == 'play' then
 			gameState = 'pause'
-		elseif gameState == 'end' then
+		elseif gameState == 'end' or gameState == 'won' then
 			player= Bird()
 			gameState = 'start'
 			score = 0
@@ -157,7 +161,9 @@ function love.draw()
 		love.graphics.print(tostring(score),V_Width/2, 80)
 		love.graphics.printf('Press Enter to restart', 15, 105, 200, 'right',0,.6,.6)
 		-- love.graphics.printf('This game dffdfdfdfd', 100, 190, V_Width, 'center',0,.5,.5) 
-
+	elseif gameState == 'won' then
+		love.graphics.printf('You won! Congrats!:', 0, 20, V_Width, 'center')
+		love.graphics.printf('Press Enter to restart', 15, 105, 200, 'right',0,.6,.6)
 	else
 		love.graphics.print(tostring(score),V_Width/2, V_Height/8)
 	end
