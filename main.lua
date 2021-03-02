@@ -13,7 +13,9 @@ V_Height = 243
 
 function love.load()
     love.window.setTitle("Paco n Garret Productions")
-
+	point = love.audio.newSource("mp3/score.mp3", "static")
+	wing = love.audio.newSource("mp3/wing.mp3", "static")
+	lose = love.audio.newSource("mp3/lose.mp3", "static")
 	--Colors
 	terrain = {.87,.84,.58}
 	green = {.30,.74,.18}
@@ -83,15 +85,18 @@ function love.update(dt)
 			if pipe1.pass == 0 then
 				score = score+1
 				pipe1.pass = 1
+				point:play()
 			end
 		elseif  pipe3.x < player.x then
 			if pipe3.pass == 0 then
 				score = score+1
 				pipe3.pass = 1
+				point:play()
 			end
 		end
 
 		if player:collides(pipe1) or player:collides(pipe2) or player:collides(pipe3) or player:collides(pipe4) then
+			lose:play()
 			gameState='end'
 			pipe1.x , pipe2.x, pipe3.x, pipe4.x = V_Width + 5 , V_Width + 5, V_Width + 5, V_Width + 5
 		end	
@@ -123,6 +128,7 @@ function love.keypressed(key)
 			gameState = 'play'
 		elseif gameState == 'play' then
 			player:jump()
+			wing:play()
 		end
 	end
 	
