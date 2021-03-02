@@ -36,10 +36,10 @@ function love.load()
 ---
 	--Game atributes 
 		--pipe
-		function randomPipes()
-			topSpace = math.random(0,108)
-			downSpace = 50
-		end
+	function randomPipes()
+		topSpace = math.random(0,108)
+		downSpace = 50
+	end
 		--
 	player= Bird()
 	gameState = 'start' -- 'pause' 'collide'
@@ -110,14 +110,19 @@ function love.keypressed(key)
     elseif key == 'enter' or key == 'return' then
 		if gameState == 'play' then
 			gameState = 'pause'
-		else
+		elseif gameState == 'end' then
+			gameState = 'start'
+			score = 0
+			gameSpeed = 100
+			firstpipes()
+			secondspipes()
 		end	
 		
 	elseif key == 'z' then
 		if gameState == 'start' or gameState == 'pause' then
 			gameState = 'play'
-		else
-		player:jump()
+		elseif gameState == 'play' then
+			player:jump()
 		end
 	end
 	
@@ -134,6 +139,7 @@ function love.draw()
 	elseif gameState == 'end' then
 		love.graphics.printf('Poop! you lose. your score was:', 0, 20, V_Width, 'center')
 		love.graphics.print(tostring(score),V_Width/2, 80)
+		love.graphics.printf('Press Enter to restart', 0, 110, V_Width, 'center')
 	else
 		love.graphics.print(tostring(score),V_Width/2, V_Height/8)
 	end
