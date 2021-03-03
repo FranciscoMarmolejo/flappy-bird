@@ -17,14 +17,21 @@ function love.load()
 	wing = love.audio.newSource("mp3/wing.mp3", "static")
 	lose = love.audio.newSource("mp3/lose.mp3", "static")
 	slap = love.audio.newSource("mp3/slap.mp3", "static")
+	win = love.audio.newSource("mp3/dub.mp3", "static")
 	--Colors
 	terrain = {.87,.84,.58}
 	green = {.30,.74,.18}
 
 	--imagenes
     ground = love.graphics.newImage("img/ground.png")
+	groundScroll = 0
+	gspeed = 60
+
 	bg = love.graphics.newImage("img/background.png")
----
+	bgScroll = 0
+	bgspeed = 30
+	bgLP = 413
+	---
     love.graphics.setDefaultFilter('nearest', 'nearest')
     math.randomseed(os.time())
 
@@ -47,7 +54,7 @@ function love.load()
 	player= Bird()
 	gameState = 'start' -- 'pause' 'collide'
 	dirt = Ground(0,218,168,25,terrain)
-	grass = Ground(0,208,168,10,green)
+	-- grass = Ground(0,208,168,10,green)
 	score = 0
 	gameSpeed = 100
 	--Loop
@@ -67,6 +74,10 @@ function love.load()
 end
 
 function love.update(dt)
+
+	bgScroll = (bgScroll + bgspeed*dt) % bgLP
+	groundScroll = (groundScroll + gameSpeed*dt) % V_Width
+
 	if gameState == 'start' then
 		
 	elseif gameState == 'play' then
@@ -96,8 +107,11 @@ function love.update(dt)
 			end
 		end
 
-		if score > 7 then 
+		if score > 2 then 
 			gameState = 'won'
+			win:play()
+			-- player.x = 190
+			-- player.y = 100
 			pipe1.x , pipe2.x, pipe3.x, pipe4.x = V_Width + 5 , V_Width + 5, V_Width + 5, V_Width + 5
 		end
 		if player:collides(pipe1) or player:collides(pipe2) or player:collides(pipe3) or player:collides(pipe4) then
@@ -149,7 +163,9 @@ function love.keypressed(key)
 end
 
 function love.draw()
-	love.graphics.draw(bg, 0, 0, 0, 1.42) --( drawable, x, y, r, sx, sy, ox, oy, kx, ky ) s=scale,o =Origin offse, k= Shearing facto
+	love.graphics.draw(bg, -bgScroll, 0, 0, 1.42) --( drawable, x, y, r, sx, sy, ox, oy, kx, ky ) s=scale,o =Origin offse, k= Shearing facto
+	love.graphics.draw(ground, -groundScroll, 618, 0, 1.9) --( drawable, x, y, r, sx, sy, ox, oy, kx, ky ) s=scale,o =Origin offse, k= Shearing facto
+	-- dirt = Ground(0,218,168,25,terrain)
 	--love.graphics.draw(ground, 0,600, 0, .2, .1)
     push:apply('start')
 	love.graphics.setFont(font)
@@ -175,7 +191,7 @@ function love.draw()
 		player:render()	
 	-- end
 	dirt:render()
-	grass:render()
+	-- grass:render()
 
 	pipe1:render()
 	pipe2:render()
