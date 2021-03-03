@@ -24,10 +24,10 @@ end
 function Bird:collides(pipe)
 	if self.x > pipe.x + pipe.w or pipe.x > self.x + self.w then
 		return false
-	  end
+	end
 	  if self.y > pipe.y + pipe.h or pipe.y > self.y + self.h then 
 		return false
-	  end
+	end
 	return true 
 end
 
