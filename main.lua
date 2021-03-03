@@ -1,8 +1,8 @@
 push  = require 'push'
 Class = require 'Class'
-bird = require 'Bird'
-bird = require 'Ground'
 pipe = require 'Pipe'
+require 'Bird'
+require 'Ground'
 -----
 
 W_Width  = 500
@@ -20,7 +20,6 @@ function love.load()
 	win = love.audio.newSource("mp3/dub.mp3", "static")
 	--Colors
 	terrain = {.87,.84,.58}
-	green = {.30,.74,.18}
 
     ground = love.graphics.newImage("img/ground.png")
 	groundScroll = 0
@@ -175,8 +174,6 @@ function love.draw()
 		love.graphics.print(tostring(score),V_Width/2, V_Height/8)
 	end
 	
-	player:render()	
-		player:render()	
 	player:render()	
 	dirt:render()
 	pipe1:render()
