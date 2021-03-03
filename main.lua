@@ -22,7 +22,6 @@ function love.load()
 	terrain = {.87,.84,.58}
 	green = {.30,.74,.18}
 
-	--imagenes
     ground = love.graphics.newImage("img/ground.png")
 	groundScroll = 0
 	gspeed = 60
@@ -43,31 +42,28 @@ function love.load()
 
     font = love.graphics.newFont('font.ttf', 18)
     love.graphics.setFont(font)
----
-	--Game atributes 
-		--pipe
+
 	function randomPipes()
 		topSpace = math.random(0,108)
 		downSpace = 50
 	end
 		--
 	player= Bird()
-	gameState = 'start' -- 'pause' 'collide'
+	gameState = 'start'
 	dirt = Ground(0,218,168,25,terrain)
-	-- grass = Ground(0,208,168,10,green)
 	score = 0
 	gameSpeed = 100
 	--Loop
 	function firstpipes()
 		randomPipes()
 		pipe2 = Pipe(V_Width ,0, 25, topSpace, gameSpeed,true)
-		pipe1 = Pipe(V_Width ,topSpace + downSpace, 25, V_Height-downSpace-topSpace-35, gameSpeed,false) --35 : 25 de dirt, 10 de grass
+		pipe1 = Pipe(V_Width ,topSpace + downSpace, 25, V_Height-downSpace-topSpace-35, gameSpeed,false)
 	end
 	firstpipes()
 	function secondspipes()
 		randomPipes()
 		pipe4 = Pipe(V_Width + 120 ,0, 25, topSpace, gameSpeed,true)
-		pipe3 = Pipe(V_Width + 120 ,topSpace + downSpace, 25, V_Height-downSpace-topSpace-35, gameSpeed,false) --35 : 25 de dirt, 10 de grass
+		pipe3 = Pipe(V_Width + 120 ,topSpace + downSpace, 25, V_Height-downSpace-topSpace-35, gameSpeed,false)
 	end
 	secondspipes()
 
@@ -81,13 +77,13 @@ function love.update(dt)
 	if gameState == 'start' then
 		
 	elseif gameState == 'play' then
-		if pipe1.x + pipe1.w <0 --[[and pipe2.x + pipe2.w < 0]] then
+		if pipe1.x + pipe1.w <0 then
 			firstpipes()
 			pipe1.x=pipe3.x+120
 			pipe2.x=pipe4.x+120
 		end
 
-		if pipe3.x + pipe3.w <0 --[[and pipe4.x + pipe4.w < 0]]then
+		if pipe3.x + pipe3.w <0 then
 			secondspipes()
 			pipe3.x=pipe1.x+120
 			pipe4.x=pipe2.x+120
@@ -107,11 +103,9 @@ function love.update(dt)
 			end
 		end
 
-		if score > 2 then 
+		if score > 9 then 
 			gameState = 'won'
 			win:play()
-			-- player.x = 190
-			-- player.y = 100
 			pipe1.x , pipe2.x, pipe3.x, pipe4.x = V_Width + 5 , V_Width + 5, V_Width + 5, V_Width + 5
 		end
 		if player:collides(pipe1) or player:collides(pipe2) or player:collides(pipe3) or player:collides(pipe4) then
@@ -163,20 +157,17 @@ function love.keypressed(key)
 end
 
 function love.draw()
-	love.graphics.draw(bg, -bgScroll, 0, 0, 1.42) --( drawable, x, y, r, sx, sy, ox, oy, kx, ky ) s=scale,o =Origin offse, k= Shearing facto
-	love.graphics.draw(ground, -groundScroll, 618, 0, 1.9) --( drawable, x, y, r, sx, sy, ox, oy, kx, ky ) s=scale,o =Origin offse, k= Shearing facto
-	-- dirt = Ground(0,218,168,25,terrain)
-	--love.graphics.draw(ground, 0,600, 0, .2, .1)
+	love.graphics.draw(bg, -bgScroll, 0, 0, 1.42) 
+	love.graphics.draw(ground, -groundScroll, 618, 0, 1.9) 
     push:apply('start')
 	love.graphics.setFont(font)
-    --main txt
+   
 	if gameState == 'start' then
     	love.graphics.printf('Flappy bird', 0, 20, V_Width, 'center')
 	elseif gameState == 'end' then
 		love.graphics.printf('Game over! Your score was:', 0, 20, V_Width, 'center')
 		love.graphics.print(tostring(score),V_Width/2, 80)
 		love.graphics.printf('Press Enter to restart', 15, 105, 200, 'right',0,.6,.6)
-		-- love.graphics.printf('This game dffdfdfdfd', 100, 190, V_Width, 'center',0,.5,.5) 
 	elseif gameState == 'won' then
 		love.graphics.printf('You won! Congrats!:', 0, 20, V_Width, 'center')
 		love.graphics.printf('Press Enter to restart', 15, 105, 200, 'right',0,.6,.6)
@@ -184,15 +175,10 @@ function love.draw()
 		love.graphics.print(tostring(score),V_Width/2, V_Height/8)
 	end
 	
-	
-	
-    --draw begin --------
-	-- if gameState ~= 'end' then
+	player:render()	
 		player:render()	
-	-- end
+	player:render()	
 	dirt:render()
-	-- grass:render()
-
 	pipe1:render()
 	pipe2:render()
     pipe3:render()
